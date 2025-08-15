@@ -8,10 +8,8 @@ class FormsTest < ApplicationSystemTestCase
     fill_in "Email", with: "john@example.com"
     fill_in "Message", with: "This is a test message"
 
-    # accept_confirm do
-    #   visit root_path
-    # end
-    visit root_path
-    binding.irb
+    accept_confirm do
+      visit root_path
+    end
   end
 end
