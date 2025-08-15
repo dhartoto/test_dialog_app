@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+# Run tests in non-headless mode for debugging
+
+ENV["HEADLESS"] = "false"
+exec "bin/rails", "test:system", *ARGV

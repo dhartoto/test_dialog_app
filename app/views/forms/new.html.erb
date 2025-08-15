@@ -1,0 +1,109 @@
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-6">Contact Form</h1>
+
+  <% if notice %>
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+      <%= notice %>
+    </div>
+  <% end %>
+
+  <% if @form.errors.any? %>
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+      <h2 class="font-bold">Please fix the following errors:</h2>
+      <ul class="list-disc list-inside">
+        <% @form.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form_with model: @form, local: true, id: "contact-form", class: "max-w-lg" do |form| %>
+    <div class="mb-4">
+      <%= form.label :name, "Name", class: "block text-sm font-medium text-gray-700 mb-2" %>
+      <%= form.text_field :name, class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", required: true %>
+    </div>
+
+    <div class="mb-4">
+      <%= form.label :email, "Email", class: "block text-sm font-medium text-gray-700 mb-2" %>
+      <%= form.email_field :email, class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", required: true %>
+    </div>
+
+    <div class="mb-4">
+      <%= form.label :message, "Message", class: "block text-sm font-medium text-gray-700 mb-2" %>
+      <%= form.text_area :message, rows: 4, class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", required: true %>
+    </div>
+
+    <div class="flex gap-4">
+      <%= form.submit "Submit", class: "bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md transition-colors" %>
+      <button type="button" id="reset-btn" class="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-md transition-colors">Reset</button>
+    </div>
+  <% end %>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('contact-form');
+    const resetBtn = document.getElementById('reset-btn');
+    const testLink = document.getElementById('test-link');
+    const testButton = document.getElementById('test-button');
+
+    let isFormDirty = false;
+    let originalFormData = new FormData(form);
+
+    // Function to check if form is dirty
+    function checkFormDirty() {
+      const currentFormData = new FormData(form);
+      isFormDirty = false;
+
+      for (let [key, value] of currentFormData.entries()) {
+        if (originalFormData.get(key) !== value) {
+          isFormDirty = true;
+          break;
+        }
+      }
+
+      return isFormDirty;
+    }
+
+    // Track form changes
+    form.addEventListener('input', function() {
+      checkFormDirty();
+      console.log('input', isFormDirty);
+    });
+
+    form.addEventListener('change', function() {
+      checkFormDirty();
+      console.log('change', isFormDirty);
+    });
+
+    // Reset button
+    resetBtn.addEventListener('click', function() {
+      form.reset();
+      originalFormData = new FormData(form);
+      isFormDirty = false;
+    });
+
+    // Test link navigation
+
+
+    // Test button action
+
+
+    // Handle beforeunload event (browser navigation)
+    window.addEventListener('beforeunload', function(event) {
+      console.log('beforeunload', isFormDirty);
+      debugger
+      if (isFormDirty) {
+        event.preventDefault();
+        event.returnValue = 'You have unsaved changes. Are you sure you want to leave this page?';
+        return event.returnValue;
+      }
+    });
+
+    // Handle form submission
+    form.addEventListener('submit', function() {
+      isFormDirty = false;
+    });
+  });
+</script>
