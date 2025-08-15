@@ -37,35 +37,10 @@ Non-headless mode is useful for:
 ### Running System Tests
 
 ```bash
-# Run all system tests (headless by default)
-bin/rails test:system
-
-# Run specific form tests (headless by default)
-bin/rails test test/system/forms_test.rb
-
-# Run tests in non-headless mode for debugging
-HEADLESS=false bin/rails test:system
-
 # Run specific tests in non-headless mode
 HEADLESS=false bin/rails test test/system/forms_test.rb
-
-# Or use convenience scripts
-bin/test-headless                    # Run in headless mode
-bin/test-visible                     # Run in non-headless mode
-bin/test-headless test/system/forms_test.rb  # Run specific test headless
-bin/test-visible test/system/forms_test.rb   # Run specific test visible
 ```
 
-### Test Scenarios
-
-The system tests cover:
-
-1. **Dirty Form Navigation**: Tests that confirmation dialogs appear when navigating away from modified forms
-2. **Clean Form Navigation**: Verifies that no confirmation dialogs appear for unmodified forms
-3. **Form Reset**: Tests that the reset button clears the dirty state, preventing confirmation dialogs
-4. **Form Submission**: Ensures form submission clears the dirty state, preventing confirmation dialogs
-
-**Note**: The confirmation dialog only appears when the form has unsaved changes. Clean forms allow navigation without any prompts.
 
 ### Dialog Handling
 
@@ -73,7 +48,7 @@ Since `unhandled_prompt_behavior` is set to `ignore`, tests must explicitly hand
 
 ```ruby
 accept_confirm do
-  click_link "Test Link"
+  visit root_path
 end
 ```
 
